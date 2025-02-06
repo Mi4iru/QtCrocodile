@@ -1,4 +1,10 @@
 car
 forest
 taxi
-peach
+apple
+bird
+watch
+fork
+wheel
+snowman
+python

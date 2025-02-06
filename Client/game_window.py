@@ -5,6 +5,8 @@ from PyQt6.QtCore import QByteArray, QBuffer, pyqtSlot
 from PyQt6.QtGui import QPixmap, QTextCursor
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
+from random import randint
+
 
 class Game(QMainWindow, Ui_Game):
     def __init__(self, client):
@@ -25,6 +27,8 @@ class Game(QMainWindow, Ui_Game):
         self.input.returnPressed.connect(self.send_msg_chat)
         self.startGame.clicked.connect(self.start_game)
         self.startGame.setDisabled(True)
+        self.pen = QtGui.QPen(QtGui.QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
+        self.pen.setWidth(3)
         self.drawer()
         self.show()
 
@@ -34,7 +38,6 @@ class Game(QMainWindow, Ui_Game):
         self.label.setPixmap(canvas)
         self.last_x, self.last_y = None, None
 
-
     def mouseMoveEvent(self, e):
         if not self.last_x or not self.role or not self.drawing_access:
             self.last_x = int(e.position().x())
@@ -43,6 +46,7 @@ class Game(QMainWindow, Ui_Game):
 
         canvas = self.label.pixmap()
         painter = QtGui.QPainter(canvas)
+        painter.setPen(self.pen)
         painter.drawLine(self.last_x, self.last_y, int(e.position().x()), int(e.position().y()))
         painter.end()
         self.label.setPixmap(canvas)

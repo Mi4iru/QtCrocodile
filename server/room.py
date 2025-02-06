@@ -2,9 +2,6 @@ import pickle
 import random
 import time
 
-from PyQt6.QtCore import QByteArray, QBuffer
-from PyQt6 import QtWidgets
-
 EOF = b'///'
 
 
@@ -24,8 +21,9 @@ class Room:
                 client.send(pickle.dumps(package) + EOF)
 
     def add_client(self, client, name):
-        self.clients.append(client)
-        self.clients_names.append(name)
+        if client not in self.clients:
+            self.clients.append(client)
+            self.clients_names.append(name)
         if not self.drawer:
             self.drawer = name
             client.send(pickle.dumps(dict(type='role', data=True)) + EOF)
@@ -49,6 +47,8 @@ class Room:
         index = self.clients_names.index(client)
         del self.clients[index]
         del self.clients_names[index]
+        if len(self.clients) == 0:
+            self.ready = True
 
     def check(self, word, client):
         if word == self.word and client != self.drawer:

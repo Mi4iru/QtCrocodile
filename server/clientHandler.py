@@ -42,7 +42,8 @@ class ClientHandler(Thread):
                         self.get_rooms()
             except Exception as e:
                 print(e)
-                self.room.remove(self.name)
+                if self.room:
+                    self.room.remove(self.name)
                 print(f'Клиент {self.name} отключен от сервера')
                 break
 

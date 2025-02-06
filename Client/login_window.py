@@ -1,4 +1,3 @@
-import pickle
 import time
 
 from Client.client import Client
